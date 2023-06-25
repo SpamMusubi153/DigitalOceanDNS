@@ -14,3 +14,9 @@ It is also possible to run this script on your own server, or in other scenarios
 To get started, fill out the "Required Values" section of the script below, and schedule the script to run regularly.
 
 **Good luck on your webhosting projects!**
+
+<br>
+
+<noscript><a href="https://liberapay.com/MusubiToTheMax/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
+
+Thank you for stopping by! At this time, I am still working through college. If you found this project helpful, I would appreciate any support you are able to lend.
