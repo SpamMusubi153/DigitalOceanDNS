@@ -19,8 +19,9 @@ import json
 # It is also possible to run this script on your own server, or in other scenarios by appropriately
 # updating the get_server_ip function.
 
-# To get started, fill out the "Required Values" section of the script below, and schedule the script
-# to run regularly.
+# To get started, fill out the "Required Values" section of the script below. Then, copy the entire file
+# into the main function of a Digital Ocean "function". You can then schedule the script to regularly 
+# update the DNS records of your websites.
 
 # Good luck on your webhosting projects!
 
