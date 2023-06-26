@@ -140,37 +140,34 @@ def attempt(code_to_attempt, arguments = None, maximum_number_of_attempts = 10, 
     return None
 
 
+# Determine the Server IP Address.
+server_ip = get_server_ip(DYNAMIC_DNS_HOSTNAME)
 
-if __name__ == "__main__":
+# Count the number of user-specified domains to update, and summarize the program's pending actions to the user.
+total_number_of_domains = len(DOMAINS_TO_UPDATE)
+print(f"Now updating all \"A\" records under {total_number_of_domains} domain{suffix(total_number_of_domains)} to the new server IP address {server_ip}")
 
-    # Determine the Server IP Address.
-    server_ip = get_server_ip(DYNAMIC_DNS_HOSTNAME)
+# Start a counter for the total number of variables updated.
+total_number_of_records = 0
 
-    # Count the number of user-specified domains to update, and summarize the program's pending actions to the user.
-    total_number_of_domains = len(DOMAINS_TO_UPDATE)
-    print(f"Now updating all \"A\" records under {total_number_of_domains} domain{suffix(total_number_of_domains)} to the new server IP address {server_ip}")
+# Repeat the update process for each specified domain. 
+for domain_name in DOMAINS_TO_UPDATE:
 
-    # Start a counter for the total number of variables updated.
-    total_number_of_records = 0
+    # Determine the record IDs and record names.
+    record_ids_under_domain, record_id_names_under_domain = request_record_ids_for_domain(domain_name)
+    
+    # Count the number of records to be updated under the domain and add the count to the total.
+    numberOfRecords = len(record_ids_under_domain)
+    total_number_of_records = total_number_of_records + numberOfRecords
 
-    # Repeat the update process for each specified domain. 
-    for domain_name in DOMAINS_TO_UPDATE:
+    # Inform the user of the number of records found.
+    print(f"\t{numberOfRecords} record{suffix(numberOfRecords)} were found under the domain {domain_name}")
 
-        # Determine the record IDs and record names.
-        record_ids_under_domain, record_id_names_under_domain = request_record_ids_for_domain(domain_name)
-        
-        # Count the number of records to be updated under the domain and add the count to the total.
-        numberOfRecords = len(record_ids_under_domain)
-        total_number_of_records = total_number_of_records + numberOfRecords
+    # Update each record and report the results.
+    for i in range(numberOfRecords):
+        response = update_dns_record_ip(domain_name, record_ids_under_domain[i], server_ip)
+        print(f"\t\tThe record \"{record_id_names_under_domain[i]}\" was updated successfully!")
+        print(f"\t\t\t{response['domain_record']}")
 
-        # Inform the user of the number of records found.
-        print(f"\t{numberOfRecords} record{suffix(numberOfRecords)} were found under the domain {domain_name}")
-
-        # Update each record and report the results.
-        for i in range(numberOfRecords):
-            response = update_dns_record_ip(domain_name, record_ids_under_domain[i], server_ip)
-            print(f"\t\tThe record \"{record_id_names_under_domain[i]}\" was updated successfully!")
-            print(f"\t\t\t{response['domain_record']}")
-
-    # Exit the program with a summary of the results.
-    print(f"\nAll {total_number_of_records} records under all {total_number_of_domains} domains have been updated successfully!\n")
+# Exit the program with a summary of the results.
+print(f"\nAll {total_number_of_records} records under all {total_number_of_domains} domains have been updated successfully!\n")
