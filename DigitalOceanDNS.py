@@ -37,6 +37,11 @@ DOMAINS_TO_UPDATE = [
     "yourwebsite.org",
 ]
 
+# A list of subdomains that will be excluded from the update process.
+SUBDOMAINS_TO_EXCLUDE = [
+    "www",    
+]
+
 # The address provided by the dynamic DNS service
 DYNAMIC_DNS_HOSTNAME = "YourDynamicServerIPHostname"
 
@@ -156,6 +161,13 @@ for domain_name in DOMAINS_TO_UPDATE:
 
     # Determine the record IDs and record names.
     record_ids_under_domain, record_id_names_under_domain = request_record_ids_for_domain(domain_name)
+    
+    # Loop over all of the records and remove any subdomain records on the exclude list.
+    for i, current_record_name in enumerate(record_id_names_under_domain):
+        if current_record_name in SUBDOMAINS_TO_EXCLUDE:
+            print(f"\tExcluding record with name {current_record_name} and id {record_ids_under_domain[i]}.")
+            del record_ids_under_domain[i]
+            del record_id_names_under_domain[i]
     
     # Count the number of records to be updated under the domain and add the count to the total.
     numberOfRecords = len(record_ids_under_domain)
