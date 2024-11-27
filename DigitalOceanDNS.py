@@ -108,9 +108,9 @@ def get_server_ip(hostname):
 
     
     if SELECTED_MODE == 2:  
-        return attempt(get_ip, arguments=(hostname,))
+        return attempt(get_ip_from_other, arguments=(hostname,))
     else:
-        return attempt(get_current_machine_public_ip_address)
+        return attempt(get_current_machine_public_ip_address, arguments={})
 
 
 # ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -178,7 +178,7 @@ def suffix(number):
 # 	It will attempt the code until a specified number of attempts (maximum_number_of_attempts) is reached.
 # 	Between attempts, it will wait for the specified attempt_delay_time in seconds.
 # 	This function then returns the result of the function call, or returns "None" if all attempts failed.
-def attempt(code_to_attempt, arguments = None, maximum_number_of_attempts = 10, attempt_delay_time = 5):
+def attempt(code_to_attempt, arguments = {}, maximum_number_of_attempts = 10, attempt_delay_time = 5):
     current_attempt = 1
     
     while(current_attempt <= maximum_number_of_attempts):
